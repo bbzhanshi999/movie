@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" name="referrer" content="no-referrer">
+    <title>即将上映</title>
+    <link rel="stylesheet" href="css/index.css">
+    <script src="js/jquery-3.1.1.min.js"></script>
+</head>
+<body>
+<div class="main" id="main">
+    <h1>豆瓣电影</h1>
+    <nav>
+        <ul>
+            <li><a href="index.html">正在热映</a></li>
+            <li><a href="coming.html" id="now">即将上映</a></li>
+            <li><a href="rank.html">排行榜</a></li>
+        </ul>
+    </nav>
+
+    <div class="content" id="content">
+
+    </div>
+
+</div>
+</body>
+
+<script type="text/javascript">
+    $(function () {
+
+        var url = 'https://api.douban.com/v2/movie/coming_soon?apikey=0b2bdeda43b5688921839c8ecb20399b';
+        $.ajax({
+            type: 'get',
+            url: url,
+            dataType: 'jsonp',
+            success:function (msg) {
+                var subjects = msg.subjects;
+                var show = "";
+                $.each(subjects, function (index,item) {
+                    show += '<a href="#" onclick="showDesc('+item.id+')"><figure>' +
+                        '<img src="'+item.images.medium+'" title=""/> <' +
+                        'p>'+item.title+'</p><span class="score">'+item.rating.average+'分</s' +
+                        'pan><span class="date">'+item.mainland_pubdate+'<' +
+                        '/span></figure></a>';
+                })
+                $('#content').append(show);
+            }
+        })
+    })
+
+    function showDesc(id) {
+        $('#content').html("");
+        var url = 'http://api.douban.com/v2/movie/subject/'+id+'?apikey=0b2bdeda43b5688921839c8ecb20399b';
+        $.ajax({
+            type: 'get',
+            url: url,
+            dataType: 'jsonp',
+            success:function (msg) {
+                var desc = "";
+                desc = '<div id="desc"><h2>'+msg.title+'</h2><span>('+msg.year+')</span><div class="content"><img src="'+msg.images.medium+'"/>';
+                console.log(msg.title);
+                var director = [];
+                var actor = [];
+                var writer = [];
+
+                $.each(msg.directors,function (index,item) {
+                    director.push(item.name);
+                })
+                director = director.join(" / ");
+
+                $.each(msg.casts,function (index,item) {
+                    actor.push(item.name);
+                })
+                actor = actor.join(" / ");
+
+                $.each(msg.writers,function (index,item) {
+                    writer.push(item.name)
+                })
+                writer = writer.join(" / ");
+
+                desc += '<div class="info">导演: '+director+' </br>主演: '+actor+'</br>' +
+                    '编剧: '+writer+'</br>类型: '+msg.genres.join(" / ")+'</br>制片国家/地区: '+msg.countries.join(" / ")+
+                    '</br>语言: '+msg.languages.join("/")+'</br>上映日期: '+msg.pubdates.join(" / ")+' </br>片长: '+
+                    msg.durations.join(" / ")+'</br>又名: '+msg.aka.join(" / ")+'</div> </div> </div>';
+
+
+                desc += '<div id="detail"><div class="summary"><h3>剧情简介</h3>' +
+                    '<p>'+msg.summary+'</p></div><div class="cast"><h3>演员表</h3>';
+
+                $.each(msg.casts,function (index,item) {
+                    desc += '<figure><img src="'+item.avatars.medium+'"/><p>'+item.name+'</p></figure>'
+                })
+                desc += '</div></div>';
+
+                desc += '<div id="review"><h3>热门评论</h3>';
+                $.each(msg.popular_comments, function (index,item) {
+                    desc += '<div class="desc"><p class="name"><i>'+item.author.name+'' +
+                        '</i>看过</p><small>'+item.created_at+'</small><span>'+item.useful_count+
+                        ' 有用</span><p class="content">'+item.content+'</p></div>';
+                })
+                desc += ' </div>';
+                $("#main").append(desc);
+                console.log(desc)
+            }
+        })
+    }
+</script>
+</html>

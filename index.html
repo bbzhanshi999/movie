@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" name="referrer" content="no-referrer">
+    <title>首页</title>
+    <link href="css/index.css" rel="stylesheet" type="text/css"/>
+    <script src="js/jquery-3.1.1.min.js"></script>
+</head>
+<body>
+    <div class="main" id="main">
+        <h1>豆瓣电影</h1>
+        <nav>
+            <ul>
+                <li><a href="index.html" id="now">正在热映</a></li>
+                <li><a href="coming.html">即将上映</a></li>
+                <li><a href="rank.html">排行榜</a></li>
+            </ul>
+        </nav>
+
+        <div class="content" id="content">
+
+        </div>
+        <!--<div id="desc">
+            <h2>欧洲攻略</h2><span>(2018)</span>
+            <div class="content">
+                <img src="https://img1.doubanio.com/view/photo/s_ratio_poster/public/p2529410377.webp">
+                <div class="info">
+                    导演: 马楚成
+                    </br>
+                    编剧: 小彭
+                    </br>
+                    主演: 梁朝伟 / 吴亦凡 / 唐嫣 / 杜鹃 / 林子祥 / Sergio De Ieso / 雅各布 格拉夫 / 元秋 / 刘家勇 / 罗莽 / 谢婷婷 / 周小飞 / 林德信 / 陈语安 / 黎烈弓 / 杰佳·亚宁
+                    </br>
+                    类型: 喜剧 / 动作 / 爱情
+                    </br>
+                    制片国家/地区: 中国大陆 / 英国
+                    </br>
+                    语言: 汉语普通话 / 粤语 / 英语 / 意大利语
+                    </br>
+                    上映日期: 2018-08-17(中国大陆)
+                    </br>
+                    片长: 100分钟
+                    </br>
+                    又名: Europe Raiders
+                </div>
+                <div class="average">
+                    <small>豆瓣评分</small>
+                    <i>6.1</i>
+                </div>
+            </div>
+        </div>
+        <div id="detail">
+            <div class="summary">
+                <h3>剧情简介</h3>
+                <p>
+                《欧洲攻略》是由马楚成执导，梁朝伟、吴亦凡、唐嫣、杜鹃、林子祥等联袂主演的动作电
+                影。影片主要讲述了特工林在风（梁朝伟 饰）与王小姐（唐嫣 饰）多年来亦敌亦友，
+                相互欣赏又互相为敌。上帝右手在CIA被不明身份的苏菲（杜鹃 饰）偷走后，两人同时受CI
+                A委托展开追寻。原本以为只是⼀场谋略较量，但在他们救下顶级黑客洛奇（吴亦凡 饰）后，却发
+                现这背后还隐藏着一个更大的秘密。
+                </p>
+            </div>
+
+            <div class="cast">
+                <h3>演员表</h3>
+                <figure>
+                    <img src="https://img3.doubanio.com/view/celebrity/s_ratio_celebrity/public/p48044.webp"/>
+                    <p>唐嫣</p>
+                </figure>
+            </div>
+        </div>
+
+        <div id="review">
+            <h3>热门评论</h3>
+            <div class="desc">
+                <p class="name"><img src="http://img7.doubanio.com/icon/u167392628-4.jpg"/><i>风吹百里</i>看过</p><small>2018-08-17</small><span>1193 有用</span>
+                <p class="content">第一次觉得唐小姐现代装也挺好看，梁先生还是标准林氏笑容，吴先生时刻freestyle进行式，杜小姐很酷倒是特别衬米兰。攻略系列终于收尾了，风格和搞笑方式都和前两部很接近，属于过七夕适合看的电影类型。</p>
+            </div>
+        </div>-->
+    </div>
+</body>
+    <script type="text/javascript">
+       $(function () {
+
+           var url = 'https://api.douban.com/v2/movie/in_theaters?a' +
+               'pikey=0b2bdeda43b5688921839c8ecb20399b&start=0';
+           $.ajax({
+               type: 'get',
+               url: url,
+               dataType: 'jsonp',
+               success:function (msg) {
+                   var subjects = msg.subjects;
+                   var show = "";
+
+                   $.each(subjects, function (index,item) {
+                       show += '<a href="#" onclick="showDesc('+item.id+')"><figure>' +
+                           '<img src="'+item.images.medium+'" title=""/> <' +
+                           'p>'+item.title+'</p><span class="score">'+item.rating.average+'分</s' +
+                           'pan><span class="date">'+item.mainland_pubdate+'<' +
+                           '/span></figure></a>';
+                   })
+                   $('#content').append(show);
+               }
+           })
+       })
+
+        function showDesc(id) {
+            $('#content').html("");
+            var url = 'http://api.douban.com/v2/movie/subject/'+id+'?apikey=0b2bdeda43b5688921839c8ecb20399b';
+            $.ajax({
+                type: 'get',
+                url: url,
+                dataType: 'jsonp',
+                success:function (msg) {
+                    var desc = "";
+                    desc = '<div id="desc"><h2>'+msg.title+'</h2><span>('+msg.year+')</span><div class="content"><img src="'+msg.images.medium+'"/>';
+                    console.log(msg.images.medium);
+                    var director = [];
+                    var actor = [];
+                    var writer = [];
+
+                    $.each(msg.directors,function (index,item) {
+                        director.push(item.name);
+                    })
+                    director = director.join(" / ");
+
+                    $.each(msg.casts,function (index,item) {
+                        actor.push(item.name);
+                    })
+                    actor = actor.join(" / ");
+
+                    $.each(msg.writers,function (index,item) {
+                        writer.push(item.name)
+                    })
+                    writer = writer.join(" / ");
+
+                    desc += '<div class="info">导演: '+director+' </br>主演: '+actor+'</br>' +
+                        '编剧: '+writer+'</br>类型: '+msg.genres.join(" / ")+'</br>制片国家 / 地区: '+msg.countries.join(" / ")+
+                        '</br>语言: '+msg.languages.join(" / ")+'</br>上映日期: '+msg.pubdates.join(" / ")+' </br>片长: '+
+                        msg.durations.join(" / ")+'</br>又名: '+msg.aka.join(" / ")+'</div><div class="average"><small>豆瓣评分</small><i>'+msg.rating.average+'</i></div></div></div>';
+
+
+                    desc += '<div id="detail"><div class="summary"><h3>剧情简介</h3>' +
+                        '<p>'+msg.summary+'</p></div><div class="cast"><h3>演员表</h3>';
+
+                    $.each(msg.casts,function (index,item) {
+                       desc += '<figure><img src="'+item.avatars.medium+'"/><p>'+item.name+'</p></figure>'
+                    })
+                    desc += '</div></div>';
+
+                    desc += '<div id="review"><h3>热门评论</h3>';
+                    $.each(msg.popular_comments, function (index,item) {
+                        desc += '<div class="desc"><p class="name"><img src="'+item.author.avatar+'"/><i>'+item.author.name+'' +
+                            '</i>看过</p><small>'+item.created_at+'</small><span>'+item.useful_count+
+                            ' 有用</span><p class="content">'+item.content+'</p></div>';
+                    })
+                    desc += ' </div>';
+                    $("#main").append(desc);
+                }
+            })
+        }
+    </script>
+
+</html>

@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" name="referrer" content="no-referrer">
+    <title>排行榜</title>
+    <link href="css/rank.css" rel="stylesheet" type="text/css"/>
+    <script src="js/jquery-3.1.1.min.js"></script>
+</head>
+<body>
+    <div class="main" id="main">
+        <h1>豆瓣电影</h1>
+        <nav>
+            <ul>
+                <li><a href="index.html">正在热映</a></li>
+                <li><a href="coming.html">即将上映</a></li>
+                <li><a href="rank.html"  id="now">排行榜</a></li>
+            </ul>
+        </nav>
+
+        <div id="rank">
+            <!--<div class="item">
+                <a href="#"><img src="https://img1.doubanio.com/view/photo/s_ratio_poster/public/p2521499639.webp"/></a>
+                <div class="desc">
+                    <p class="title">死侍2 / DP2</p>
+                    <p class="content">2018-05-18(美国) / 瑞恩·雷诺兹 / 乔什·布洛林 / 莫蕾娜·巴卡林 / 朱利安·迪尼森 / 莎姬·贝兹 / T·J·米勒 / 莱斯利·格塞斯 / 卡兰·索尼 / 布里安娜·希德布兰德 / 杰克·凯西 / 埃迪·马森 / 忽那汐里 / 斯蒂芬·卡皮契奇 / 兰德尔·瑞德...</p>
+                    <p class="score"><span>7.5</span> (77823人评价)</p>
+                </div>
+            </div>-->
+
+
+        </div>
+    </div>
+</body>
+    <script type="text/javascript">
+        $(function () {
+            var url = 'https://api.douban.com/v2/movie/new_movies?apikey=0b2bdeda43b5' +
+                '688921839c8ecb20399b&&start=0&count=100';
+            $.ajax({
+                type:'get',
+                url:url,
+                dataType: 'jsonp',
+                success:function (msg) {
+                    var show = "";
+                    $.each(msg.subjects,function (index,item) {
+                        var name = [];
+                        var pubdates = [];
+                        show += '<div class="item"><a href="#" onclick="showDesc('+item.id+')"><img src="'+item.images.medium+'"/></a> <div class="desc"><p class="title">'+item.title+'</p><p class="content">';
+
+                        $.each(item.pubdates,function (index,item) {
+                            pubdates.push(item);
+                        })
+                        pubdates = pubdates.join(" / ");
+                        show += pubdates;
+
+                        $.each(item.casts,function (index,item) {
+                            name.push(item.name);
+                        })
+                        name = name.join(" / ");
+                        show += ' / '+name;
+                        show += ' / '+item.genres.join(" / ")+' / '+item.durations.join(" / ")+'</p><p class="score"><span>'+item.rating.average+'</span> ('+item.collect_count+'人评价)</p></div></div>';
+                    })
+
+                    $("#rank").append(show);
+                }
+            })
+        })
+        function showDesc(id) {
+            $('#rank').html("");
+            var url = 'http://api.douban.com/v2/movie/subject/'+id+'?apikey=0b2bdeda43b5688921839c8ecb20399b';
+            $.ajax({
+                type: 'get',
+                url: url,
+                dataType: 'jsonp',
+                success:function (msg) {
+                    var desc = "";
+                    desc = '<div id="desc"><h2>'+msg.title+'</h2><span>('+msg.year+')</span><div class="content"><img src="'+msg.images.medium+'"/>';
+                    console.log(msg.images.medium);
+                    var director = [];
+                    var actor = [];
+                    var writer = [];
+
+                    $.each(msg.directors,function (index,item) {
+                        director.push(item.name);
+                    })
+                    director = director.join(" / ");
+
+                    $.each(msg.casts,function (index,item) {
+                        actor.push(item.name);
+                    })
+                    actor = actor.join(" / ");
+
+                    $.each(msg.writers,function (index,item) {
+                        writer.push(item.name)
+                    })
+                    writer = writer.join(" / ");
+
+                    desc += '<div class="info">导演: '+director+' </br>主演: '+actor+'</br>' +
+                        '编剧: '+writer+'</br>类型: '+msg.genres.join(" / ")+'</br>制片国家 / 地区: '+msg.countries.join(" / ")+
+                        '</br>语言: '+msg.languages.join(" / ")+'</br>上映日期: '+msg.pubdates.join(" / ")+' </br>片长: '+
+                        msg.durations.join(" / ")+'</br>又名: '+msg.aka.join(" / ")+'</div><div class="average"><small>豆瓣评分</small><i>'+msg.rating.average+'</i></div></div></div>';
+
+
+                    desc += '<div id="detail"><div class="summary"><h3>剧情简介</h3>' +
+                        '<p>'+msg.summary+'</p></div><div class="cast"><h3>演员表</h3>';
+
+                    $.each(msg.casts,function (index,item) {
+                        desc += '<figure><img src="'+item.avatars.medium+'"/><p>'+item.name+'</p></figure>'
+                    })
+                    desc += '</div></div>';
+
+                    desc += '<div id="review"><h3>热门评论</h3>';
+                    $.each(msg.popular_comments, function (index,item) {
+                        desc += '<div class="desc"><p class="name"><img src="'+item.author.avatar+'"/><i>'+item.author.name+'' +
+                            '</i>看过</p><small>'+item.created_at+'</small><span>'+item.useful_count+
+                            ' 有用</span><p class="content">'+item.content+'</p></div>';
+                    })
+                    desc += ' </div>';
+                    $("#main").append(desc);
+                }
+            })
+        }
+    </script>
+</html>

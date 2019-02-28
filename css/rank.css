@@ -1,0 +1,257 @@
+* {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    text-decoration: none;
+}
+
+.main {
+    width: 95%;
+    margin: 0 auto;
+    padding-bottom: 40px;
+}
+
+h1 {
+    margin-top: 10px;
+    letter-spacing: 2px;
+    color: #1d7ad9;
+}
+
+.main nav {
+    margin-top: 10px;
+    background-color: #545c64;
+}
+
+.main nav ul li {
+    display: inline-block;
+}
+
+.main nav ul li a {
+    display: inline-block;
+    padding: 15px;
+    color: #fff;
+    letter-spacing: 1px;
+    border:3px solid #545c64
+}
+
+.main nav ul li a:hover {
+    border-bottom-color: #ecc000;
+    color: #ecc000;
+}
+
+#now {
+    border-bottom-color: #ecc000;
+    color: #ecc000;
+}
+
+#rank {
+    width: 80%;
+    margin: 0 auto;
+    padding-top: 10px;
+}
+
+#rank .item {
+    padding-bottom:10px;
+    border-bottom: 1px dashed #d6d6d6;
+    margin-top: 15px;
+}
+
+#rank .item a {
+    display: inline-block;
+    width: 102px;
+    height: 150px;
+    margin-right: 20px;
+}
+
+#rank .item img {
+    display: inline-block;
+    width: 102px;
+    height: 150px;
+
+}
+
+#rank .item .desc {
+    width: 60%;
+    display: inline-block;
+    vertical-align: top;
+    font-size: 13px;
+    color: #545c64;
+    line-height: 1.63;
+}
+
+#rank .item .desc .title{
+    color: #1c88cb;
+    margin-bottom: 15px;
+}
+
+#rank .item .desc .content{
+    margin-bottom: 15px;
+}
+
+#rank .item .desc .score{
+
+}
+#rank .item .desc .score span{
+    color: #ffac2d;
+}
+
+
+
+
+#desc {
+    width: 80%;
+    margin: 0 auto;
+    padding-top: 10px;
+}
+#desc h2{
+    display: inline-block;
+    color: #545c64;
+}
+
+#desc span {
+    font-weight: bold;
+    font-size: 23px;
+    margin-left: 10px;
+    color: #999999;
+}
+
+#desc .content {
+    width: 100%;
+    margin-top: 10px;
+}
+
+
+#desc .content img{
+    width: 135px;
+    height: 189px;
+    float: left;
+}
+
+#desc .content .info {
+    width: 60%;
+    margin-left: 60px;
+    font-size: 13px;
+    color: #545c64;
+    line-height: 1.63;
+    float: left;
+}
+
+#desc .content .average {
+    display: inline-block;
+    width: 6%;
+    margin-left: 70px;
+    border-radius: 5px;
+    border: 1px solid #f0f0f0;
+    text-align: center;
+
+}
+
+#desc .content .average small {
+    color: #1d7ad9;
+}
+
+#desc .content .average i {
+    display: block;
+    font-size: 28px;
+    font-style: normal;
+    color: #545c64;
+}
+
+
+#detail {
+    width: 80%;
+    margin: 0 auto;
+    font-size: 13px;
+    line-height: 1.63;
+    clear: both;
+    padding-top: 20px;
+}
+
+#detail p {
+    color: #545c64;
+    text-indent: 15px;
+}
+
+#detail h3{
+    color: #007722;
+    font-size: 20px;
+    letter-spacing: 1px;
+    margin-top: 20px;
+    margin-bottom: 10px;
+}
+
+#detail .cast {
+    margin-top: 10px;
+}
+
+#detail .cast figure {
+    display: inline-block;
+    margin-right: 30px;
+    margin-bottom: 10px;
+}
+
+
+#detail .cast figure img {
+    width: 95px;
+    height: 133px;
+
+}
+
+#detail .cast figure p {
+    text-indent: 0;
+    text-align: center;
+}
+
+#review {
+    width: 80%;
+    margin: 0 auto;
+    margin-top: 10px;
+}
+#review h3 {
+    color: #007722;
+    font-size: 20px;
+    letter-spacing: 1px;
+}
+
+#review .desc {
+    font-size: 13px;
+    line-height: 1.63;
+    border-bottom: 1px solid #d6d6d6;
+    padding: 20px 0px;
+}
+
+#review .desc .name{
+    display: inline-block;
+    margin-right: 20px;
+}
+
+
+#review .desc .name img{
+    display: inline-block;
+    width:24px ;
+    height:24px ;
+    vertical-align: bottom;
+    margin-right: 13px;
+}
+
+#review .desc .name i{
+    color: #1d7ad9;
+    font-style: normal;
+    margin-right: 8px;
+}
+#review .desc small{
+    color: #adadad;
+}
+
+#review .desc span{
+    float: right;
+    color: #1d7ad9;
+}
+
+#review .desc .content {
+    margin-top: 5px;
+}
+
+h3 {
+    margin-top: 20px;
+}

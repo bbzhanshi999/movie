@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link href="css/style.css" rel="stylesheet"/>
+    <script src="../js/jquery-3.1.1.min.js"></script>
+    <script>
+        function showDetail(id){
+            $("body .container").remove();
+            $("<div class='detail'></div>").appendTo("body");
+
+            $.getJSON("http://api.douban.com/v2/movie/subject/"+id+"?callback=?",
+                {apikey:"0b2bdeda43b5688921839c8ecb20399b"},function (data) {
+                console.log(data);
+            })
+            //todo
+        }
+        $(function () {
+
+            $.getJSON("https://api.douban.com/v2/movie/in_theaters?callback=?",
+                {apikey: "0b2bdeda43b5688921839c8ecb20399b", start: 0},
+                function (data) {
+                    console.log(data);
+                    var list = $('.container>ul');
+                    var show = "<li onclick='showDetail(this.id)'><dl><dt><img/></dt><dd><h4></h4><span class=\"rating\"></span><span class=\"pubTime\"></span></dd></dl></li>";
+                    $.each(data.subjects, function (index,subject) {
+                        movieLi = $(show).attr("id",subject.id);
+                        if(index%4==0&&index!=0){
+                            movieLi.addClass("last");
+                        }
+                        list.append(movieLi);
+
+                        movieLi.find("img").attr("src",subject.images.medium).attr("alt",subject.alt);
+                        movieLi.find("h4").html(subject.title);
+                        movieLi.find(".rating").html(subject.rating.average);
+                        movieLi.find(".pubTime").html(subject.mainland_pubdate);
+
+                    })
+                })
+        })
+    </script>
+</head>
+<body>
+<h2 class="header">豆瓣电影</h2>
+<div class="nav">
+    <ul>
+        <li><a class="selected" href="index.html">正在上映</a></li>
+        <li><a href="">即将上映</a></li>
+        <li><a href="">排行榜</a></li>
+    </ul>
+</div>
+<div class="container">
+    <ul>
+
+    </ul>
+</div>
+</body>
+</html>
